@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+    <h3>Items</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${items.empty}">
+                <td colspan="2">No items available</td>
+            </tr>
+            <tr th:each="item: ${items}">
+                <td><span th:text="${item.getName()}"></span></td>
+                <td><span th:text="${item.}"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
