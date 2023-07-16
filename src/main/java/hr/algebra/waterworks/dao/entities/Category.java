@@ -8,5 +8,5 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 public class Category {
     private int id;
-    private String Name;
+    private String name;
 }

@@ -1,9 +1,7 @@
 package hr.algebra.waterworks.dao.entities;
 
-import hr.algebra.waterworks.dao.enums.ItemType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -15,7 +13,7 @@ public class Item{
     private String name;
     private String description;
     private BigDecimal price;
-
-    private ItemType type;
+    private Category category;
     private String imageName;
+    private boolean active;
 }
