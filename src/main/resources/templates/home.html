@@ -2,42 +2,42 @@
 <html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
-    <div class="container pt-4">
-        <div class="row mb-2">
-            <!-- Text Input (col-md-3 for larger screens) -->
-            <div class="col-12 col-md-10 mb-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Pretražite proizvode...">
+    <form method="post" th:object="${itemFilter}" action="/filter">
+        <div class="container pt-4">
+            <div class="row mb-2">
+                <div class="col-12 col-md-10 mb-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="item.name" th:field="*{name}" placeholder="Pretražite proizvode...">
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 mb-2">
+                    <input type="submit" class="btn btn-secondary w-100"></input>
                 </div>
             </div>
-            <div class="col-12 col-md-2 mb-2">
-                <button class="btn btn-secondary w-100">Traži</button>
+            <div class="row mb-2">
+                <div class="col-12 col-md-6 mb-2">
+                    <div class="input-group">
+                        <label class="input-group-text" for="categorySelect">Kategorija</label>
+                        <select class="form-select" id="categorySelect">
+                            <option selected>Odaberi</option>
+                            <option value="1">Miješalice</option>
+                            <option value="2">Tuš kade</option>
+                            <option value="3">Bidei</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">od</span>
+                        <input type="text" class="form-control" name="item.priceFrom" th:field="*{priceFrom}" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
+                        <span class="input-group-text">do</span>
+                        <input type="text" class="form-control" th:field="*{priceTo}" placeholder="..." aria-label="Cijena do">
+                        <span class="input-group-text">€</span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row mb-2">
-            <div class="col-12 col-md-6 mb-2">
-                <div class="input-group">
-                    <label class="input-group-text" for="categorySelect">Kategorija</label>
-                    <select class="form-select" id="categorySelect">
-                        <option selected>Odaberi</option>
-                        <option value="1">Miješalice</option>
-                        <option value="2">Tuš kade</option>
-                        <option value="3">Bidei</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 mb-2">
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">od</span>
-                    <input type="text" class="form-control" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
-                    <span class="input-group-text">do</span>
-                    <input type="text" class="form-control" placeholder="..." aria-label="Cijena do">
-                    <span class="input-group-text">€</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    </form>
     <hr class="border border-2 opacity-75 mb-4" style="background-color: #b5d2fe !important;">
     <div class="container d-flex justify-content-between">
         <div class="row">

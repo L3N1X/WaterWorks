@@ -32,7 +32,7 @@ public class ItemServiceMock implements ItemService {
         if(request != null){
             return items
                     .stream()
-                    .filter(i -> request.name().equals(i.getName()) || request.price().compareTo(i.getPrice()) == 0)
+                    .filter(i -> request.getName().equals(i.getName()) || request.getPriceFrom().compareTo(i.getPrice()) == 0)
                     .map(i -> new ItemDto(i.getId(), i.getName(), i.getDescription(), i.getPrice(), null, i.getImageName(), i.isActive()))
                     .collect(Collectors.toList());
         }

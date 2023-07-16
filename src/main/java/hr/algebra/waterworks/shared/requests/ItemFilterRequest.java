@@ -1,8 +1,16 @@
 package hr.algebra.waterworks.shared.requests;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
-public record ItemFilterRequest(
-        String name,
-        BigDecimal price
-){}
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ItemFilterRequest{
+    private String name;
+    private BigDecimal priceFrom;
+    private BigDecimal priceTo;
+}
