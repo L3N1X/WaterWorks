@@ -2,26 +2,66 @@
 <html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
-    <h3>Items</h3>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:if="${items.empty}">
-                <td colspan="2">No items available</td>
-            </tr>
-            <tr th:each="item: ${items}">
-                <td><span th:text="${item.name()}">Name</span></td>
-                <td><span th:text="${item.description()}">Category</span></td>
-                <td><span th:text="${item.price()}">Price</span></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container pt-4">
+        <div class="row mb-2">
+            <!-- Text Input (col-md-3 for larger screens) -->
+            <div class="col-12 col-md-10 mb-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Pretražite proizvode...">
+                </div>
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <button class="btn btn-secondary w-100">Traži</button>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-12 col-md-6 mb-2">
+                <div class="input-group">
+                    <label class="input-group-text" for="categorySelect">Kategorija</label>
+                    <select class="form-select" id="categorySelect">
+                        <option selected>Odaberi</option>
+                        <option value="1">Miješalice</option>
+                        <option value="2">Tuš kade</option>
+                        <option value="3">Bidei</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">od</span>
+                    <input type="text" class="form-control" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
+                    <span class="input-group-text">do</span>
+                    <input type="text" class="form-control" placeholder="..." aria-label="Cijena do">
+                    <span class="input-group-text">€</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <hr class="border border-2 opacity-75 mb-4" style="background-color: #b5d2fe !important;">
+    <div class="container d-flex justify-content-between">
+        <div class="row">
+            <div class="col-12 col-md-4 mb-3" th:each="item: ${items}">
+                <div class="card w-100 p-3" style="width: 18rem;">
+                    <div class="p-4">
+                        <img class="card-img-top" src="/images/faucet-1.png" alt="Card image cap">
+                    </div>
+                    <div style="min-height: 250px;" class="card-body">
+                        <h5 class="card-title" th:text="${item.name()}">Name</h5>
+                        <p class="card-text" style="font-weight: lighter" th:text="${item.description()}"></p>
+                        <div class="d-flex justify-content-between">
+                            <ul>
+                                <li style="color: #1ec75f">Dostupno</li>
+                            </ul>
+                            <p style="font-weight: bolder; font-size: 1.2rem; text-align: right" th:text="${item.price()} + ' ' + '€'">Price</p>
+                        </div>
+                        <a href="#" class="btn btn-primary w-100 mb-2">Kupi odmah</a>
+                        <a href="#" class="btn btn-outline-primary w-100 mb-2">+ Dodaj u košaricu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
