@@ -22,7 +22,7 @@ public class HomeController {
         return "home";
     }
 
-    @PostMapping("filter")
+    @PostMapping
     public String getFilteredHomePage(Model model, @ModelAttribute("itemFilter") ItemFilterRequest itemFilterRequest) {
         model.addAttribute("items", waterWorksService.getAllItems(itemFilterRequest));
         model.addAttribute("categories", waterWorksService.getAllCategories());

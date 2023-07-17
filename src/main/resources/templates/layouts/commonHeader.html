@@ -1,25 +1,34 @@
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg" style="background: linear-gradient(189deg, rgba(255,255,255,1) 0%, rgba(13,110,253,1) 100%);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="color: white; font-weight: bold">WaterWorks</a>
+            <a class="navbar-brand" href="/" style="color: white; font-weight: bold">WaterWorks</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#" style="color:white !important;">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/" style="color:white !important;">Doma</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color:white !important;">Categories</a>
+                        <a class="nav-link" href="#" style="color:white !important;">Kategorije</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color:white !important;">About</a>
+                        <a class="nav-link" href="#" style="color:white !important;">Načini plaćanja</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: white">Pricing</a>
+                        <a class="nav-link" href="#" style="color: white">O nama</a>
                     </li>
                 </ul>
+                <div>
+                    <a href="#" class="btn btn-warning">
+                        <i class="fa-solid fa-cart-shopping" title="cart"></i>
+                    </a>
+                    <a href="/auth/login" class="btn btn-primary">
+                        <i class="fa-solid fa-right-to-bracket" title="login"></i>
+                        <span>Log in</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>

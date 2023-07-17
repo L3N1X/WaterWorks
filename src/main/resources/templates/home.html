@@ -2,7 +2,7 @@
 <html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
-    <form method="post" th:object="${itemFilter}" action="/filter">
+    <form method="post" th:object="${itemFilter}" action="/">
         <div class="container pt-4">
             <div class="row mb-2">
                 <div class="col-12 col-md-10 mb-2">
@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-2 mb-2">
-                    <input type="submit" class="btn btn-secondary w-100"></input>
+                    <input type="submit" value="Traži" class="btn btn-secondary w-100"></input>
                 </div>
             </div>
             <div class="row mb-2">
@@ -19,7 +19,7 @@
                     <div class="input-group">
                         <label class="input-group-text" for="categorySelect">Kategorija</label>
                         <select class="form-select" id="categorySelect" name="selectedCategoryId">
-                            <option th:selected="*{selectedCategoryId == 0}" value="0">Odaberi</option>
+                            <option th:selected="*{selectedCategoryId == 0}" value="0">Odaberite</option>
                             <option th:each="category: ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${itemFilter.selectedCategoryId == category.id()}"></option>
                         </select>
                     </div>
