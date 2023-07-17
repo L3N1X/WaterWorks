@@ -13,7 +13,7 @@ public class Item{
     private String name;
     private String description;
     private BigDecimal price;
-    private Category category;
+    private int categoryId;
     private String imageName;
     private boolean active;
 }

@@ -18,11 +18,9 @@
                 <div class="col-12 col-md-6 mb-2">
                     <div class="input-group">
                         <label class="input-group-text" for="categorySelect">Kategorija</label>
-                        <select class="form-select" id="categorySelect">
-                            <option selected>Odaberi</option>
-                            <option value="1">Miješalice</option>
-                            <option value="2">Tuš kade</option>
-                            <option value="3">Bidei</option>
+                        <select class="form-select" id="categorySelect" name="selectedCategoryId">
+                            <option th:selected="*{selectedCategoryId == 0}" value="0">Odaberi</option>
+                            <option th:each="category: ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${itemFilter.selectedCategoryId == category.id()}"></option>
                         </select>
                     </div>
                 </div>

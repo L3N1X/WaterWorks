@@ -1,7 +1,6 @@
 package hr.algebra.waterworks.controllers.view;
 
-import hr.algebra.waterworks.dao.services.interfaces.ItemService;
-import hr.algebra.waterworks.shared.requests.CreateItemRequest;
+import hr.algebra.waterworks.dao.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,18 +12,21 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class HomeController {
 
-    private ItemService itemService;
+    private WaterWorksService waterWorksService;
 
     @GetMapping
     public String getHomePage(Model model) {
-        model.addAttribute("items", itemService.GetAll(null));
+        model.addAttribute("items", waterWorksService.getAllItems(null));
         model.addAttribute("itemFilter", new ItemFilterRequest());
+        model.addAttribute("categories", waterWorksService.getAllCategories());
         return "home";
     }
 
     @PostMapping("filter")
     public String getFilteredHomePage(Model model, @ModelAttribute("itemFilter") ItemFilterRequest itemFilterRequest) {
-        model.addAttribute("items", itemService.GetAll(itemFilterRequest));
+        model.addAttribute("items", waterWorksService.getAllItems(itemFilterRequest));
+        model.addAttribute("categories", waterWorksService.getAllCategories());
+        System.out.println(itemFilterRequest.getSelectedCategoryId());
         return "home";
     }
 
