@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 @AllArgsConstructor
+@SessionAttributes("categories")
 public class HomeController {
 
     private WaterWorksService waterWorksService;
@@ -25,8 +26,6 @@ public class HomeController {
     @PostMapping
     public String getFilteredHomePage(Model model, @ModelAttribute("itemFilter") ItemFilterRequest itemFilterRequest) {
         model.addAttribute("items", waterWorksService.getAllItems(itemFilterRequest));
-        model.addAttribute("categories", waterWorksService.getAllCategories());
-        System.out.println(itemFilterRequest.getSelectedCategoryId());
         return "home";
     }
 
