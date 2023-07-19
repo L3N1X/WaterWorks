@@ -1,20 +1,29 @@
 package hr.algebra.waterworks.shared.sessionmodels;
 
 import hr.algebra.waterworks.shared.dtos.ItemDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 @Data
 public class Cart {
 
     public Cart() {
-        this.items = new HashSet<>();
+        this.items = new HashMap<>();
     }
-    private Set<ItemDto> items;
-    private String text = "KURAC";
+    private HashMap<ItemDto, Integer> items;
+
+    public BigDecimal getTotalPrice(){
+        BigDecimal totalSum = BigDecimal.ZERO;
+        for (Map.Entry<ItemDto, Integer> entry : items.entrySet()) {
+            ItemDto key = entry.getKey();
+            Integer value = entry.getValue();
+            BigDecimal price = key.price();
+            BigDecimal sumForEntry = price.multiply(BigDecimal.valueOf(value));
+            totalSum = totalSum.add(sumForEntry);
+        }
+        return totalSum;
+    }
 }

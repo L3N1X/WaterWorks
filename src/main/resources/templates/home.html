@@ -54,7 +54,7 @@
                             <p style="font-weight: bolder; font-size: 1.2rem; text-align: right" th:text="${item.price()} + ' ' + '€'">Price</p>
                         </div>
                         <a href="#" class="btn btn-primary w-100 mb-2">Kupi odmah</a>
-                        <a th:href="@{cart/add(itemId=${item.id()})}" class="btn btn-outline-primary w-100 mb-2">+ Dodaj u košaricu</a>
+                        <a th:href="@{/cart/add/__${item.id()}__}" class="btn btn-outline-primary w-100 mb-2">+ Dodaj u košaricu</a>
                     </div>
                 </div>
             </div>
