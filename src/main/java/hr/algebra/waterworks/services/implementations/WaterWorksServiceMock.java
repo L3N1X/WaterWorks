@@ -1,7 +1,7 @@
-package hr.algebra.waterworks.dao.services.implementations;
+package hr.algebra.waterworks.services.implementations;
 
 import hr.algebra.waterworks.dao.entities.Category;
-import hr.algebra.waterworks.dao.services.interfaces.WaterWorksService;
+import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
 import hr.algebra.waterworks.dao.entities.Item;
@@ -28,12 +28,12 @@ public class WaterWorksServiceMock implements WaterWorksService {
         Category category2 = new Category(2, "Tuševi");
         categories = Stream.of(category1, category2).collect(Collectors.toList());
 
-        Item item1 = new Item(1, "Miješalica za sudoper Voxort Kaya Silver", "Boja: crna, D: 14,9 cm, V:14,4 cm", new BigDecimal("29.99"), 1, null, true);
-        Item item2 = new Item(2, "Miješalica podžbukna za umivaonik Voxort Perla", "Boja: crna, D: 18,3 cm", new BigDecimal("39.99"),  1, null, true);
-        Item item3 = new Item(3, "Miješalica podžbukna za umivaonik Voxort Tea Black", "Boja: crna, D: 18,1 cm, V:38,2 cm", new BigDecimal("49.99"), 1,  null, true);
-        Item item4 = new Item(4, "Miješalica za umivaonik potisna Voxort, krom", "Boja: crna, dužina izljeva: 12,5 cm, visina izljeva: 10,9 cm", new BigDecimal("49.99"), 1, null, true);
-        Item item5 = new Item(5, "Miješalica za kadu Voxort Iris, krom/crna", "Boja: crna, dužina izljeva: 21,67 cm, visina izljeva: 24,84 cm", new BigDecimal("49.99"), 1,  null, true);
-        Item item6 = new Item(6, "Miješalica za tuš kadu Voxort Iris, krom/crna", "Boja: crna, D: 12,8 cm, visina izljeva: 24,84 cm, promjer 1 cm", new BigDecimal("49.99"), 1, null, true);
+        Item item1 = new Item(1, "Miješalica za sudoper Voxort Kaya Silver", "Boja: crna, D: 14,9 cm, V:14,4 cm", new BigDecimal("29.99"), 1, null, true, 20);
+        Item item2 = new Item(2, "Miješalica podžbukna za umivaonik Voxort Perla", "Boja: crna, D: 18,3 cm", new BigDecimal("39.99"),  1, null, true, 20);
+        Item item3 = new Item(3, "Miješalica podžbukna za umivaonik Voxort Tea Black", "Boja: crna, D: 18,1 cm, V:38,2 cm", new BigDecimal("49.99"), 1,  null, true, 20);
+        Item item4 = new Item(4, "Miješalica za umivaonik potisna Voxort, krom", "Boja: crna, dužina izljeva: 12,5 cm, visina izljeva: 10,9 cm", new BigDecimal("49.99"), 1, null, true, 20);
+        Item item5 = new Item(5, "Miješalica za kadu Voxort Iris, krom/crna", "Boja: crna, dužina izljeva: 21,67 cm, visina izljeva: 24,84 cm", new BigDecimal("49.99"), 1,  null, true, 20);
+        Item item6 = new Item(6, "Miješalica za tuš kadu Voxort Iris, krom/crna", "Boja: crna, D: 12,8 cm, visina izljeva: 24,84 cm, promjer 1 cm", new BigDecimal("49.99"), 1, null, true, 20);
         items = Stream.of(item1, item2, item3, item4, item5, item6).collect(Collectors.toList());
     }
 
@@ -47,7 +47,7 @@ public class WaterWorksServiceMock implements WaterWorksService {
             if(currentItemCategory.isPresent())
                 currentCategoryName = currentItemCategory.get().getName();
             // TODO WARNING: You have set available always to true, beware!
-            ItemDto dto = new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getPrice(), currentCategoryName, item.getImageName(), item.isActive(), true);
+            ItemDto dto = new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getPrice(), currentCategoryName, item.getImageName(), item.isActive(), true, item.getAmount());
             if(categoryId == 0 || item.getCategoryId() == categoryId)
                 itemDtos.add(dto);
         }

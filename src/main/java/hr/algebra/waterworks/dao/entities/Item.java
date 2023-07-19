@@ -16,4 +16,5 @@ public class Item{
     private int categoryId;
     private String imageName;
     private boolean active;
+    private int amount;
 }

@@ -48,8 +48,11 @@
                         <h5 class="card-title" th:text="${item.name()}">Name</h5>
                         <p class="card-text" style="font-weight: lighter" th:text="${item.description()}"></p>
                         <div class="d-flex justify-content-between">
-                            <ul>
+                            <ul th:if="${item.amount() != 0}">
                                 <li style="color: #1ec75f">Dostupno</li>
+                            </ul>
+                            <ul th:if="${item.amount() == 0}">
+                                <li class="text-danger">Nedostupno</li>
                             </ul>
                             <p style="font-weight: bolder; font-size: 1.2rem; text-align: right" th:text="${item.price()} + ' ' + '€'">Price</p>
                         </div>

@@ -1,4 +1,4 @@
-package hr.algebra.waterworks.dao.services.interfaces;
+package hr.algebra.waterworks.services.interfaces;
 
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;

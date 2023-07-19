@@ -9,5 +9,6 @@ public record ItemDto(int id,
         String categoryName,
         String base64content,
         boolean active,
-        boolean available) {
+        boolean available,
+        int amount) {
 }

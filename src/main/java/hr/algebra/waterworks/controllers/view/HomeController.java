@@ -1,6 +1,6 @@
 package hr.algebra.waterworks.controllers.view;
 
-import hr.algebra.waterworks.dao.services.interfaces.WaterWorksService;
+import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

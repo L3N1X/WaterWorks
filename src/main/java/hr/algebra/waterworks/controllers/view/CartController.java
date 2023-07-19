@@ -1,12 +1,10 @@
 package hr.algebra.waterworks.controllers.view;
 
-import hr.algebra.waterworks.dao.services.interfaces.WaterWorksService;
-import hr.algebra.waterworks.shared.dtos.ItemDto;
+import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.sessionmodels.Cart;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +61,7 @@ public class CartController {
         return "cart";
     }
 
-    @GetMapping("view")
+    @GetMapping
     public String getCartPage(HttpSession session, Model model) {
         if(session.getAttribute("cart") == null)
             session.setAttribute("cart", new Cart());

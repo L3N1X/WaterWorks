@@ -29,7 +29,7 @@ public class AuthController {
     @GetMapping("logout")
     public String cleanSession(SessionStatus sessionStatus){
         sessionStatus.setComplete();
-        return "redirect:/login";
+        return "redirect:/";
     }
 
 }
