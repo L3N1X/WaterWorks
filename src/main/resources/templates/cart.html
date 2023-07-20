@@ -22,7 +22,7 @@
               <td th:text="${entry.getValue()}"></td>
               <td th:text="${entry.getKey().price() + '€'}"></td>
               <td>
-                <a th:href="@{/cart/addMore/__${entry.getKey().id()}__}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus"></i></a>
+                <a th:if="${entry.getKey().amount() > entry.getValue()}" th:href="@{/cart/addMore/__${entry.getKey().id()}__}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus"></i></a>
                 <a th:href="@{/cart/remove/__${entry.getKey().id()}__}" class="btn btn-outline-secondary"><i class="fa-solid fa-minus"></i></a>
               </td>
             </tr>

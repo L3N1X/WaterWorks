@@ -56,8 +56,14 @@
                             </ul>
                             <p style="font-weight: bolder; font-size: 1.2rem; text-align: right" th:text="${item.price()} + ' ' + '€'">Price</p>
                         </div>
-                        <a href="#" class="btn btn-primary w-100 mb-2">Kupi odmah</a>
-                        <a th:href="@{/cart/add/__${item.id()}__}" class="btn btn-outline-primary w-100 mb-2">+ Dodaj u košaricu</a>
+                        <div th:if="${item.amount() != 0}">
+                            <a href="#" class="btn btn-primary w-100 mb-2">Kupi odmah</a>
+                            <a th:href="@{/cart/add/__${item.id()}__}" class="btn btn-outline-primary w-100 mb-2">+ Dodaj u košaricu</a>
+                        </div>
+                        <div th:if="${item.amount() == 0}">
+                            <button type="button" class="btn btn-primary w-100 mb-2" disabled>Kupi odmah</button>
+                            <button type="button" class="btn btn-outline-primary w-100 mb-2" disabled>Dodaj u košaricu</button>
+                        </div>
                     </div>
                 </div>
             </div>
