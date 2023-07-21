@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <form method="post" th:object="${itemFilter}" action="/">
+    <div class="container pt-4">
+      <div class="row mb-2">
+        <div class="col-12 col-md-10 mb-2">
+          <div class="input-group">
+            <input type="text" class="form-control" name="item.name" th:field="*{name}" placeholder="Pretražite proizvode...">
+          </div>
+        </div>
+        <div class="col-12 col-md-2 mb-2">
+          <input type="submit" value="Traži" class="btn btn-secondary w-100"></input>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-12 col-md-4 mb-2">
+          <div class="input-group">
+            <label class="input-group-text" for="categorySelect">Kategorija</label>
+            <select class="form-select" id="categorySelect" name="selectedCategoryId">
+              <option th:selected="*{selectedCategoryId == 0}" value="0">Odaberite</option>
+              <option th:each="category: ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${itemFilter.selectedCategoryId == category.id()}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 mb-2">
+          <div class="input-group">
+            <label class="input-group-text" for="statusSelect">Dostupnost</label>
+            <select class="form-select" name="selectedStatusId" id="statusSelect">
+              <option th:selected="*{selectedStatusId == 0}" value="0">Svi</option>
+              <option th:selected="*{selectedStatusId == 1}" value="1">Dostupni</option>
+              <option th:selected="*{selectedStatusId == 2}" value="2">Nedostupni</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 mb-2">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">od</span>
+            <input type="text" class="form-control" name="item.priceFrom" th:field="*{priceFrom}" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
+            <span class="input-group-text">do</span>
+            <input type="text" class="form-control" th:field="*{priceTo}" placeholder="..." aria-label="Cijena do">
+            <span class="input-group-text">€</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <hr class="border border-2 opacity-75 mb-4" style="background-color: #b5d2fe !important;">
+  <div class="container d-flex justify-content-between">
+    <div class="row">
+      <div class="col-12 col-md-4 mb-3" th:each="item: ${items}">
+        <div class="card w-100 p-3" style="width: 18rem;">
+          <div class="p-4">
+            <img class="card-img-top" src="/images/faucet-1.png" alt="Card image cap">
+          </div>
+          <div style="min-height: 250px;" class="card-body">
+            <h5 class="card-title" th:text="${item.name()}">Name</h5>
+            <p class="card-text" style="font-weight: lighter" th:text="${item.description()}"></p>
+            <div class="d-flex justify-content-between">
+              <ul th:if="${item.amount() != 0}">
+                <li style="color: #1ec75f">Dostupno</li>
+              </ul>
+              <ul th:if="${item.amount() == 0}">
+                <li class="text-danger">Nedostupno</li>
+              </ul>
+              <p style="font-weight: bolder; font-size: 1.2rem; text-align: right" th:text="${item.price()} + ' ' + '€'">Price</p>
+            </div>
+            <div th:if="${item.amount() != 0}">
+              <a href="#" class="btn btn-primary w-100 mb-2">Kupi odmah</a>
+              <a th:href="@{/cart/add/__${item.id()}__}" class="btn btn-outline-primary w-100 mb-2">+ Dodaj u košaricu</a>
+            </div>
+            <div th:if="${item.amount() == 0}">
+              <button type="button" class="btn btn-primary w-100 mb-2" disabled>Kupi odmah</button>
+              <button type="button" class="btn btn-outline-primary w-100 mb-2" disabled>Dodaj u košaricu</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

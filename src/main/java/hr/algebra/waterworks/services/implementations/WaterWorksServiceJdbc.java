@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -60,6 +61,9 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
             }
         }
         List<Item> items = jdbcTemplate.query(query, this::mapRowToItem);
+        for (Item item : items){
+            System.out.println(item.getImageName());
+        }
         return itemsToDtos(items);
     }
 
@@ -110,20 +114,26 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     }
 
     @Override
-    public ItemDto createItem(CreateItemRequest request) {
+    public ItemDto createItem(CreateItemRequest request) throws IOException {
         int id = insertItem(request);
         List<Item> items = jdbcTemplate.query(SELECT_ITEM_BY_ID + id, this::mapRowToItem);
         Optional<ItemDto> dto = itemsToDtos(items).stream().findFirst();
         return dto.orElse(null);
     }
 
-    private int insertItem(CreateItemRequest request) {
+    private int insertItem(CreateItemRequest request) throws IOException {
+        String base64Image = "";
+        if(!request.getImageInput().isEmpty()) {
+            byte[] imageBytes = request.getImageInput().getBytes();
+            base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        }
         Map<String, Object> itemDetails = new HashMap<>();
         itemDetails.put("NAME", request.getName());
         itemDetails.put("DESCRIPTION", request.getDescription());
         itemDetails.put("PRICE", request.getPrice());
-        itemDetails.put("CATEGORY_ID", request.getCategoryId());
+        itemDetails.put("CATEGORY_ID", request.getSelectedCategoryId());
         itemDetails.put("AMOUNT", request.getAmount());
+        itemDetails.put("IMAGE_NAME", base64Image);
         return simpleJdbcInsert.executeAndReturnKey(itemDetails).intValue();
     }
 

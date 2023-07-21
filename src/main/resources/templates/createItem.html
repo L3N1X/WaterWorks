@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <div class="container d-flex justify-content-center align-items-center pt-4" style="width: 100vw; height:85vh">
+    <div class="card mb-3 p-4" style="width: 850px">
+        <div class="card-body">
+          <h4 class="card-title text-center mb-4">Dodaj novi proizvod</h4>
+          <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+          </div>
+          <form action="/manage/create" method="post" th:object="${createItemRequest}" enctype="multipart/form-data">
+            <div class="row w-100 mb-3">
+              <div class="col-12 col-md-6">
+                <img class="mb-3" src="/images/no-image.jpg" id="imagePreview" style="width:100%; height: auto" alt="Item image">
+                <input class="form-control" id="imageInput" th:field="*{imageInput}" accept="image/*" type="file">
+              </div>
+              <div class="col-12 col-md-6">
+                <input type="text" class="form-control mb-3" placeholder="Naziv proizvoda" th:field="*{name}"/>
+                <textarea class="form-control mb-3" placeholder="Kratak opis" th:field="*{description}"></textarea>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Kategorija</span>
+                  <select class="form-select" id="categorySelect" name="selectedCategoryId">
+                    <option th:selected="*{selectedCategoryId == 0}" value="0">Odaberite</option>
+                    <option th:each="category: ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${createItemRequest.selectedCategoryId == category.id()}"></option>
+                  </select>
+                </div>
+                <div class="row">
+                  <div class="input-group col-12 col-md-6 mb-3">
+                    <span class="input-group-text">Količina</span>
+                    <input type="number" class="form-control" th:field="*{amount}">
+                  </div>
+                  <div class="input-group col-12 col-md-6 mb-3">
+                    <input type="number" step="0.01" class="form-control" placeholder="Cijena" th:field="*{price}">
+                    <span class="input-group-text">€</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mb-4">
+              <input type="submit" class="btn btn-success w-100" value="Dodaj">
+            </div>
+          </form>
+        </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

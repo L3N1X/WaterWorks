@@ -5,6 +5,7 @@ import hr.algebra.waterworks.shared.dtos.ItemDto;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface WaterWorksService {
@@ -12,7 +13,7 @@ public interface WaterWorksService {
     //Items
     List<ItemDto> getAllItems(ItemFilterRequest request);
     ItemDto getItem(int id);
-    ItemDto createItem(CreateItemRequest request);
+    ItemDto createItem(CreateItemRequest request) throws IOException;
 
     //Categories
     List<CategoryDto> getAllCategories();
