@@ -14,4 +14,5 @@ public class ItemFilterRequest{
     private BigDecimal priceFrom;
     private BigDecimal priceTo;
     private int selectedCategoryId;
+    private int selectedStatusId = 0;
 }

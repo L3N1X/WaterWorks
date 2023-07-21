@@ -50,8 +50,13 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
             if(Optional.ofNullable(request.getPriceFrom()).isPresent()){
                 query += " AND PRICE >= " + request.getPriceFrom();
             }
-            if(Optional.ofNullable(request.getPriceTo()).isPresent()){
+            if(Optional.ofNullable(request.getPriceTo()).isPresent()) {
                 query += " AND PRICE <= " + request.getPriceTo();
+            }
+            if (request.getSelectedStatusId() == 1)
+                query += " AND AMOUNT > 0";
+            else if (request.getSelectedStatusId() == 2) {
+                query += " AND AMOUNT = 0";
             }
         }
         List<Item> items = jdbcTemplate.query(query, this::mapRowToItem);

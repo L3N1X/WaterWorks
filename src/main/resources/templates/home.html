@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-12 col-md-6 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                     <div class="input-group">
                         <label class="input-group-text" for="categorySelect">Kategorija</label>
                         <select class="form-select" id="categorySelect" name="selectedCategoryId">
@@ -24,7 +24,17 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 mb-2">
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="input-group">
+                        <label class="input-group-text" for="statusSelect">Dostupnost</label>
+                        <select class="form-select" name="selectedStatusId" id="statusSelect">
+                            <option th:selected="*{selectedStatusId == 0}" value="0">Svi</option>
+                            <option th:selected="*{selectedStatusId == 1}" value="1">Dostupni</option>
+                            <option th:selected="*{selectedStatusId == 2}" value="2">Nedostupni</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-2">
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">od</span>
                         <input type="text" class="form-control" name="item.priceFrom" th:field="*{priceFrom}" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
