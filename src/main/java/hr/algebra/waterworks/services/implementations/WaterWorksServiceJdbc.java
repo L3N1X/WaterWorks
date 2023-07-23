@@ -1,5 +1,6 @@
 package hr.algebra.waterworks.services.implementations;
 
+import hr.algebra.waterworks.config.ImageConfig;
 import hr.algebra.waterworks.dao.entities.Category;
 import hr.algebra.waterworks.dao.entities.Item;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
@@ -7,6 +8,8 @@ import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
+import hr.algebra.waterworks.utils.ImageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -27,10 +30,13 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     private static final String SELECT_ITEM_BY_ID = "SELECT * FROM ITEM WHERE ID =";
     private static final String SELECT_CATEGORY_BY_ID = "SELECT * FROM CATEGORY WHERE ID =";
     private static final String SELECT_ALL_CATEGORIES = "SELECT * FROM CATEGORY";
+    private final ImageConfig imageConfig;
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
-    public WaterWorksServiceJdbc(JdbcTemplate jdbcTemplate) {
+    @Autowired
+    public WaterWorksServiceJdbc(JdbcTemplate jdbcTemplate, ImageConfig imageConfig) {
+        this.imageConfig = imageConfig;
         this.jdbcTemplate = jdbcTemplate;
         this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName(ITEM_TABLE_NAME)
@@ -61,9 +67,6 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
             }
         }
         List<Item> items = jdbcTemplate.query(query, this::mapRowToItem);
-        for (Item item : items){
-            System.out.println(item.getImageName());
-        }
         return itemsToDtos(items);
     }
 
@@ -122,10 +125,9 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     }
 
     private int insertItem(CreateItemRequest request) throws IOException {
-        String base64Image = "";
+        String base64image = null;
         if(!request.getImageInput().isEmpty()) {
-            byte[] imageBytes = request.getImageInput().getBytes();
-            base64Image = Base64.getEncoder().encodeToString(imageBytes);
+            base64image = Base64.getEncoder().encodeToString(request.getImageInput().getBytes());
         }
         Map<String, Object> itemDetails = new HashMap<>();
         itemDetails.put("NAME", request.getName());
@@ -133,7 +135,7 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
         itemDetails.put("PRICE", request.getPrice());
         itemDetails.put("CATEGORY_ID", request.getSelectedCategoryId());
         itemDetails.put("AMOUNT", request.getAmount());
-        itemDetails.put("IMAGE_NAME", base64Image);
+        itemDetails.put("IMAGE_NAME", base64image);
         return simpleJdbcInsert.executeAndReturnKey(itemDetails).intValue();
     }
 

@@ -55,7 +55,7 @@
                         <img class="card-img-top" src="/images/no-image.jpg" alt="Faucet alt">
                     </div>
                     <div th:if="${item.base64content() != null && !item.base64content().isEmpty()}">
-                        <img class="card-img-top" th:src="@{${item.base64content()}}" alt="Image alt">
+                        <img class="card-img-top" th:src="@{'data:image/jpeg;charset=utf-8;base64,' + ${item.base64content()}}" alt="Image alt">
                     </div>
                     <div style="min-height: 250px;" class="card-body">
                         <h5 class="card-title" th:text="${item.name()}">Name</h5>

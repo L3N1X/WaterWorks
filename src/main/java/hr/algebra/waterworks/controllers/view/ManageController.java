@@ -1,5 +1,6 @@
 package hr.algebra.waterworks.controllers.view;
 
+import hr.algebra.waterworks.publishers.CustomSpringEventPublisher;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import java.io.IOException;
 @RequestMapping("manage")
 @AllArgsConstructor
 public class ManageController {
+
+    private CustomSpringEventPublisher customSpringEventPublisher;
     private WaterWorksService waterWorksService;
 
     @GetMapping("create")
@@ -31,6 +34,7 @@ public class ManageController {
             waterWorksService.createItem(createItemRequest);
         } catch (IOException e) {
             model.addAttribute("errorMessage", "Došlo je do pogreške. Kontaktirajte administratora.");
+            customSpringEventPublisher.publishCustomEvent("ppppppiiipppiii");
             return "createItem";
         }
         return "redirect:/";
