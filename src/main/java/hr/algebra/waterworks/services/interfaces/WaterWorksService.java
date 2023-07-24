@@ -1,7 +1,9 @@
 package hr.algebra.waterworks.services.interfaces;
 
+import hr.algebra.waterworks.dao.entities.Login;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
+import hr.algebra.waterworks.shared.dtos.LoginDto;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
 
@@ -18,4 +20,7 @@ public interface WaterWorksService {
     //Categories
     List<CategoryDto> getAllCategories();
 
+    //Logins
+    void createLogin(Login login);
+    List<LoginDto> getAllLogins();
 }

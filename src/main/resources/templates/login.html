@@ -2,21 +2,23 @@
 <html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
-  <div class="container d-flex justify-content-center align-items-center" style="width: 100vw; height: 75vh">
-    <div class="card mb-3 p-3" style="width:450px">
-      <div class="card-body">
-        <h4 class="card-title text-center mb-5 text-primary">Prijava u račun</h4>
-        <div class="mb-3">
-          <input type="email" class="form-control mb-3 text-center" placeholder="militza.krmpotich@example.com"/>
-          <input type="password" class="form-control text-center" placeholder="lozinka"/>
-        </div>
+  <form action="/auth/login" method="post" th:object="${loginRequest}">
+    <div class="container d-flex justify-content-center align-items-center" style="width: 100vw; height: 75vh">
+      <div class="card mb-3 p-3" style="width:450px">
+        <div class="card-body">
+          <h4 class="card-title text-center mb-5 text-primary">Prijava u račun</h4>
+          <div class="mb-3">
+            <input type="email" class="form-control mb-3 text-center" th:field="*{email}" placeholder="militza.krmpotich@example.com"/>
+            <input type="password" class="form-control text-center" th:field="*{password}" placeholder="lozinka"/>
+          </div>
         </div>
         <div class="d-flex justify-content-center align-items-center mb-4">
-          <a href="#" class="btn btn-primary w-100">Prijavi me</a>
+          <input type="submit" class="btn btn-primary w-100" value="Prijavi me"/>
         </div>
         <span class="text-center">Nemate račun? <a href="/auth/register">Registrirajte se ovdje</a></span>
       </div>
     </div>
+  </form>
   </div>
 </body>
 </html>

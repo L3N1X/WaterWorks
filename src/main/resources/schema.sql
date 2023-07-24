@@ -4,6 +4,12 @@ CREATE TABLE CATEGORY(
     PRIMARY KEY (ID)
 );
 
+CREATE TABLE ROLE(
+    ID INT GENERATED ALWAYS AS IDENTITY,
+    NAME VARCHAR(50) NOT NULL,
+    PRIMARY KEY (ID)
+);
+
 CREATE TABLE ITEM (
     ID INT GENERATED ALWAYS AS IDENTITY,
     NAME VARCHAR(50) NOT NULL,
@@ -15,4 +21,27 @@ CREATE TABLE ITEM (
     CATEGORY_ID INT NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORY(ID)
+);
+
+CREATE TABLE USER_ACCOUNT(
+                             ID INT GENERATED ALWAYS AS IDENTITY,
+                             FIRST_NAME VARCHAR(50) NOT NULL,
+                             LAST_NAME VARCHAR(50) NOT NULL,
+                             EMAIL VARCHAR(50) NOT NULL,
+                             PASSWORD_HASH VARCHAR(MAX) NOT NULL,
+    ROLE_ID INT NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (ROLE_ID) REFERENCES ROLE(ID)
+);
+
+
+
+
+CREATE TABLE USER_ACCOUNT_LOGIN(
+                                   ID INT GENERATED ALWAYS AS IDENTITY,
+                                   IP_ADDRESS VARCHAR(50) NOT NULL,
+                                   USER_ID INT NOT NULL,
+                                   LOCAL_DATETIME DATETIME NOT NULL,
+                                   PRIMARY KEY (ID),
+                                   FOREIGN KEY (USER_ID) REFERENCES USER_ACCOUNT(ID)
 );

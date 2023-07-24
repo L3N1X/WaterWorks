@@ -3,12 +3,13 @@ package hr.algebra.waterworks.services.implementations;
 import hr.algebra.waterworks.config.ImageConfig;
 import hr.algebra.waterworks.dao.entities.Category;
 import hr.algebra.waterworks.dao.entities.Item;
+import hr.algebra.waterworks.dao.entities.Login;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
+import hr.algebra.waterworks.shared.dtos.LoginDto;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
-import hr.algebra.waterworks.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Primary
@@ -30,17 +32,21 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     private static final String SELECT_ITEM_BY_ID = "SELECT * FROM ITEM WHERE ID =";
     private static final String SELECT_CATEGORY_BY_ID = "SELECT * FROM CATEGORY WHERE ID =";
     private static final String SELECT_ALL_CATEGORIES = "SELECT * FROM CATEGORY";
-    private final ImageConfig imageConfig;
+    private static final String SELECT_ALL_LOGINS = "SELECT l.*, U.FIRST_NAME AS USER_FIRST_NAME, U.LAST_NAME AS USER_LAST_NAME, u.EMAIL AS USER_EMAIL, r.NAME AS ROLE_NAME FROM USER_ACCOUNT_LOGIN l INNER JOIN USER_ACCOUNT AS U ON U.ID = l.USER_ID INNER JOIN ROLE AS R ON R.ID = U.ROLE_ID";
+
     private final JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private SimpleJdbcInsert itemJdbcInsert;
+    private SimpleJdbcInsert loginJdbcInsert;
 
     @Autowired
     public WaterWorksServiceJdbc(JdbcTemplate jdbcTemplate, ImageConfig imageConfig) {
-        this.imageConfig = imageConfig;
         this.jdbcTemplate = jdbcTemplate;
-        this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+        this.itemJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName(ITEM_TABLE_NAME)
                 .usingGeneratedKeyColumns(ITEM_TABLE_ID);
+        this.loginJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("USER_ACCOUNT_LOGIN")
+                .usingGeneratedKeyColumns("ID");
     }
 
     @Override
@@ -136,12 +142,36 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
         itemDetails.put("CATEGORY_ID", request.getSelectedCategoryId());
         itemDetails.put("AMOUNT", request.getAmount());
         itemDetails.put("IMAGE_NAME", base64image);
-        return simpleJdbcInsert.executeAndReturnKey(itemDetails).intValue();
+        return itemJdbcInsert.executeAndReturnKey(itemDetails).intValue();
     }
 
     @Override
     public List<CategoryDto> getAllCategories() {
         List<Category> categories = jdbcTemplate.query(SELECT_ALL_CATEGORIES, this::mapRowToCategory);
         return categoriesToDtos(categories);
+    }
+
+    @Override
+    public void createLogin(Login login) {
+        Map<String, Object> loginDetails = new HashMap<>();
+        loginDetails.put("USER_ID", login.getUserId());
+        loginDetails.put("IP_ADDRESS", login.getIpAddress());
+        loginDetails.put("LOCAL_DATETIME", login.getDateTime());
+        loginJdbcInsert.execute(loginDetails);
+    }
+
+    private LoginDto mapRowToLogin(ResultSet rs, int rowNum) throws SQLException{
+        return new LoginDto(rs.getInt("USER_ID"),
+                rs.getString("IP_ADDRESS"),
+                (rs.getTimestamp("LOCAL_DATETIME")).toLocalDateTime(),
+                rs.getString("USER_EMAIL"),
+                rs.getString("USER_FIRST_NAME"),
+                rs.getString("USER_LAST_NAME"),
+                rs.getString("ROLE_NAME"));
+    }
+
+    @Override
+    public List<LoginDto> getAllLogins() {
+        return jdbcTemplate.query(SELECT_ALL_LOGINS, this::mapRowToLogin);
     }
 }

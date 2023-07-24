@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <div class="container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Role</th>
+        <th scope="col">IP address</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="login: ${logins}">
+        <th scope="row" th:text="${login.dateTime()}"></th>
+        <td th:text="${login.userFirstName()}"></td>
+        <td th:text="${login.userLastName()}"></td>
+        <td th:text="${login.userEmail()}"></td>
+        <td th:text="${login.userRoleName()}"></td>
+        <td th:text="${login.ipAddress()}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
