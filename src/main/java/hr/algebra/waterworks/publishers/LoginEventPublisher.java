@@ -11,9 +11,9 @@ public class LoginEventPublisher {
 
     private ApplicationEventPublisher applicationEventPublisher;
 
-    public void publishSuccessfulLogin(final int userId){
-        System.out.println("User with id{" + userId + "} logged in successfully");
-        LoginEvent loginEvent = new LoginEvent(this, userId);
+    public void publishSuccessfulLogin(final String username){
+        System.out.println("User with id{" + username + "} logged in successfully");
+        LoginEvent loginEvent = new LoginEvent(this, username);
         applicationEventPublisher.publishEvent(loginEvent);
     }
 

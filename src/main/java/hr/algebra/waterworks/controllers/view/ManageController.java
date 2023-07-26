@@ -34,7 +34,6 @@ public class ManageController {
             waterWorksService.createItem(createItemRequest);
         } catch (IOException e) {
             model.addAttribute("errorMessage", "Došlo je do pogreške. Kontaktirajte administratora.");
-            loginEventPublisher.publishSuccessfulLogin(10);
             return "createItem";
         }
         return "redirect:/";

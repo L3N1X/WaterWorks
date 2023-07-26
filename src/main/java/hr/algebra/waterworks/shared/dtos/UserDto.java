@@ -1,6 +1,6 @@
 package hr.algebra.waterworks.shared.dtos;
 
-import hr.algebra.waterworks.dao.enums.UserRole;
+import java.util.List;
 
-public record UserDto(int id, String firstName, String lastName, String email, String role) {
+public record UserDto(String firstName, String lastName, String username, List<String> roles) {
 }

@@ -9,8 +9,7 @@
         <th scope="col">Date</th>
         <th scope="col">First name</th>
         <th scope="col">Last name</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">Role</th>
+        <th scope="col">Username</th>
         <th scope="col">IP address</th>
       </tr>
       </thead>
@@ -19,8 +18,7 @@
         <th scope="row" th:text="${login.dateTime()}"></th>
         <td th:text="${login.userFirstName()}"></td>
         <td th:text="${login.userLastName()}"></td>
-        <td th:text="${login.userEmail()}"></td>
-        <td th:text="${login.userRoleName()}"></td>
+        <td th:text="${login.userId()}"></td>
         <td th:text="${login.ipAddress()}"></td>
       </tr>
       </tbody>

@@ -4,13 +4,13 @@ import org.springframework.context.ApplicationEvent;
 
 public class LoginEvent extends ApplicationEvent {
 
-    private final int userId;
-    public LoginEvent(Object source, int userId) {
+    private final String username;
+    public LoginEvent(Object source, String username) {
         super(source);
-        this.userId = userId;
+        this.username = username;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 }

@@ -19,11 +19,11 @@ public class LoginEventListener implements ApplicationListener<LoginEvent> {
 
     @Override
     public void onApplicationEvent(LoginEvent event) {
-        int userId = event.getUserId();
+        String username = event.getUsername();
         LocalDateTime dateTime = LocalDateTime.now();
         String ipAddress = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getRemoteAddr();
-        waterWorksService.createLogin(new Login(userId, ipAddress, dateTime));
-        System.out.println("Received custom event, user id: " + userId + " ip: " + ipAddress + " date time: " + dateTime);
+        waterWorksService.createLogin(new Login(username, ipAddress, dateTime));
+        System.out.println("Received custom event, user id: " + username + " ip: " + ipAddress + " date time: " + dateTime);
     }
 }

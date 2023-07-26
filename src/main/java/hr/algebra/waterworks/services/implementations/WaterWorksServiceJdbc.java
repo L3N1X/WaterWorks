@@ -32,7 +32,7 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     private static final String SELECT_ITEM_BY_ID = "SELECT * FROM ITEM WHERE ID =";
     private static final String SELECT_CATEGORY_BY_ID = "SELECT * FROM CATEGORY WHERE ID =";
     private static final String SELECT_ALL_CATEGORIES = "SELECT * FROM CATEGORY";
-    private static final String SELECT_ALL_LOGINS = "SELECT l.*, U.FIRST_NAME AS USER_FIRST_NAME, U.LAST_NAME AS USER_LAST_NAME, u.EMAIL AS USER_EMAIL, r.NAME AS ROLE_NAME FROM USER_ACCOUNT_LOGIN l INNER JOIN USER_ACCOUNT AS U ON U.ID = l.USER_ID INNER JOIN ROLE AS R ON R.ID = U.ROLE_ID";
+    private static final String SELECT_ALL_LOGINS = "SELECT ual.*,  u.FIRST_NAME AS USER_FIRST_NAME, u.LAST_NAME AS USER_LAST_NAME FROM USER_ACCOUNT_LOGIN AS ual INNER JOIN users AS u ON u.username = ual.USER_ID";
 
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert itemJdbcInsert;
@@ -161,13 +161,11 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     }
 
     private LoginDto mapRowToLogin(ResultSet rs, int rowNum) throws SQLException{
-        return new LoginDto(rs.getInt("USER_ID"),
+        return new LoginDto(rs.getString("USER_ID"),
                 rs.getString("IP_ADDRESS"),
                 (rs.getTimestamp("LOCAL_DATETIME")).toLocalDateTime(),
-                rs.getString("USER_EMAIL"),
                 rs.getString("USER_FIRST_NAME"),
-                rs.getString("USER_LAST_NAME"),
-                rs.getString("ROLE_NAME"));
+                rs.getString("USER_LAST_NAME"));
     }
 
     @Override

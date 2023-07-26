@@ -547,7 +547,7 @@ legend + * {
 /* rtl:raw:
 [type="tel"],
 [type="url"],
-[type="email"],
+[type="username"],
 [type="number"] {
   direction: ltr;
 }
