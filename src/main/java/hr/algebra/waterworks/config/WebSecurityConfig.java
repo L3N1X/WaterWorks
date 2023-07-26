@@ -38,7 +38,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/images").permitAll()
+                        .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/manage/logins").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
