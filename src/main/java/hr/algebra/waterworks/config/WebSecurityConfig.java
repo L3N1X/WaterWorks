@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/auth/register").anonymous()
                         .requestMatchers("/manage/logins").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )

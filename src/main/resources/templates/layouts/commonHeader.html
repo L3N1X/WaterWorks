@@ -1,3 +1,4 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg" style="background: linear-gradient(189deg, rgba(255,255,255,1) 0%, rgba(13,110,253,1) 100%);">
         <div class="container-fluid">
@@ -19,17 +20,31 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#" style="color: white">O nama</a>
                     </li>
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link" href="/manage/items" style="color: white">Upravljanje inventarom</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link" href="/manage/items" style="color: white">Upravljanje kategorijama</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link" href="/manage/logins" style="color: white">Prijave u sustav</a>
+                    </li>
                 </ul>
                 <div>
                     <a href="/cart" class="btn btn-warning">
                         <i class="fa-solid fa-cart-shopping" title="cart"></i>
                     </a>
-                    <a href="/auth/login" class="btn btn-primary">
+                    <a href="/login" sec:authorize="isAnonymous()" class="btn btn-primary">
                         <i class="fa-solid fa-right-to-bracket" title="login"></i>
                         <span>Prijava</span>
+                    </a>
+                    <a th:href="@{/auth/logout}" sec:authorize="isAuthenticated()" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-right-from-bracket" title="logout"></i>
+                        <span>Odjava</span>
                     </a>
                 </div>
             </div>
         </div>
     </nav>
 </div>
+</html>
