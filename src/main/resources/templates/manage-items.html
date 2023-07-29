@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <form method="post" th:object="${itemFilter}" action="/manage/items">
+    <div class="container pt-4">
+      <div class="row mb-2">
+        <div class="col-12 col-md-10 mb-2">
+          <div class="input-group">
+            <input type="text" class="form-control" name="item.name" th:field="*{name}" placeholder="Pretražite proizvode...">
+          </div>
+        </div>
+        <div class="col-12 col-md-2 mb-2">
+          <input type="submit" value="Traži" class="btn btn-secondary w-100"></input>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-12 col-md-4 mb-2">
+          <div class="input-group">
+            <label class="input-group-text" for="categorySelect">Kategorija</label>
+            <select class="form-select" id="categorySelect" name="selectedCategoryId">
+              <option th:selected="*{selectedCategoryId == 0}" value="0">Odaberite</option>
+              <option th:each="category: ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${itemFilter.selectedCategoryId == category.id()}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 mb-2">
+          <div class="input-group">
+            <label class="input-group-text" for="statusSelect">Dostupnost</label>
+            <select class="form-select" name="selectedStatusId" id="statusSelect">
+              <option th:selected="*{selectedStatusId == 0}" value="0">Svi</option>
+              <option th:selected="*{selectedStatusId == 1}" value="1">Dostupni</option>
+              <option th:selected="*{selectedStatusId == 2}" value="2">Nedostupni</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 mb-2">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">od</span>
+            <input type="text" class="form-control" name="item.priceFrom" th:field="*{priceFrom}" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
+            <span class="input-group-text">do</span>
+            <input type="text" class="form-control" th:field="*{priceTo}" placeholder="..." aria-label="Cijena do">
+            <span class="input-group-text">€</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <hr class="border border-2 opacity-75 mb-4" style="background-color: #b5d2fe !important;">
+  <div class="container">
+    <div class="row">
+      <a href="/manage/create" class="btn btn-primary"><i class="fa-solid fa-plus"></i>&nbsp;Dodaj novi artikl</a>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Slika</th>
+        <th scope="col">Naziv</th>
+        <th scope="col">Kategorija</th>
+        <th scope="col">Na stanju</th>
+        <th scope="col">Cijena</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item: ${items}">
+        <td>
+          <div th:if="${item.base64content() == null || item.base64content().isBlank()}" class="p-1">
+            <img style="height: 220px; width: auto" src="/images/no-image.jpg" alt="Faucet alt">
+          </div>
+          <div th:if="${item.base64content() != null && !item.base64content().isEmpty()}" class="p-1">
+            <img style="height: 220px; width: auto" th:src="@{'data:image/jpeg;charset=utf-8;base64,' + ${item.base64content()}}" alt="Image alt">
+          </div>
+        </td>
+        <td>
+          <b><span th:text="${item.name()}"></span></b>
+        </td>
+        <td>
+          <span th:text="${item.categoryName()}"></span>
+        </td>
+        <td>
+          <span th:text="${item.amount()}"></span>
+        </td>
+        <td>
+          <span th:text="${item.price() + '€'}"></span>
+        </td>
+        <td>
+          <a th:href="@{/manage/edit(id=${item.id()})}" class="btn btn-warning">Uredi</a>
+        </td>
+        <td>
+          <a th:if="${item.active()}" href="#" class="btn btn-outline-danger">Deaktiviraj</a>
+          <a th:if="${!item.active()}" href="#" class="btn btn-danger">Aktiviraj</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
