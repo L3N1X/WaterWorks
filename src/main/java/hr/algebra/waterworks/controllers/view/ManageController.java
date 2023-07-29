@@ -62,8 +62,7 @@ public class ManageController {
 
     @GetMapping("edit")
     public String getEditItemPage(Model model, @RequestParam("id") int id){
-        EditItemRequest editItemRequest = new EditItemRequest();
-        editItemRequest.setItem(waterWorksService.getItem(id));
+        EditItemRequest editItemRequest = new EditItemRequest(waterWorksService.getItem(id));
         model.addAttribute("categories", waterWorksService.getAllCategories());
         model.addAttribute("editItemRequest", editItemRequest);
         return "edit-item";
