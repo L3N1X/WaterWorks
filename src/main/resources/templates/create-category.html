@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <form th:action="@{/manage/newcategory}" th:object="${createCategoryRequest}" method="post">
+    <div class="container d-flex justify-content-center align-items-center" style="width: 100vw; height: 75vh">
+      <div class="card mb-3 p-3" style="width:450px">
+        <div class="card-body">
+          <h4 class="card-title text-center mb-5">Kreiranje kategorije</h4>
+          <div class="mb-3">
+            <input class="form-control" type="text" th:field="*{name}" placeholder="Naziv kategorije">
+          </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mb-4">
+          <input type="submit" class="btn btn-success w-100" value="Kreiraj"/>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>

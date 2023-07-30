@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <div class="container">
+    <h1 class="text-center mb-3 pt-3">Kategorije</h1>
+    <a class="btn btn-success w-100" href="/manage/newcategory"><i class="fa-solid fa-plus"></i>&nbsp;Dodaj kategoriju</a>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Naziv kategorije</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="category: ${allCategories}">
+        <th scope="row" th:text="${category.name()}"></th>
+        <td><a href="#" class="btn btn-danger">Ukloni</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

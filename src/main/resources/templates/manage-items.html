@@ -88,8 +88,8 @@
           <a th:href="@{/manage/edit(id=${item.id()})}" class="btn btn-warning">Uredi</a>
         </td>
         <td>
-          <a th:if="${item.active()}" href="#" class="btn btn-outline-danger">Deaktiviraj</a>
-          <a th:if="${!item.active()}" href="#" class="btn btn-danger">Aktiviraj</a>
+          <a th:if="${item.active()}" th:href="@{/manage/deactivate(id=${item.id()})}" class="btn btn-outline-danger">Deaktiviraj</a>
+          <a th:if="${!item.active()}" th:href="@{/manage/activate(id=${item.id()})}" class="btn btn-danger">Aktiviraj</a>
         </td>
       </tr>
       </tbody>

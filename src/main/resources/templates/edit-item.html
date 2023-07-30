@@ -9,14 +9,14 @@
         <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
           <span th:text="${errorMessage}"></span>
         </div>
-        <form th:action="@{'manage/edit/' + ${id}}" method="post" th:object="${editItemRequest}" enctype="multipart/form-data">
+        <form th:action="@{/manage/edit(id=${editItemRequest.getId()})}" method="post" th:object="${editItemRequest}" enctype="multipart/form-data">
           <div class="row w-100 mb-3">
             <div class="col-12 col-md-6">
               <div th:if="${editItemRequest.base64content == null || editItemRequest.base64content.isBlank()}" class="mb-3">
-                <img id="imagePreview" style="height: 220px; width: auto" src="/images/no-image.jpg" alt="Faucet alt">
+                <img id="imagePreview" style="width: 350px; height: auto" src="/images/no-image.jpg" alt="Faucet alt">
               </div>
               <div th:if="${editItemRequest.base64content != null && !editItemRequest.base64content.isEmpty()}" class="mb-3">
-                <img id="imagePreview" style="height: 220px; width: auto" th:src="@{'data:image/jpeg;charset=utf-8;base64,' + *{base64content}}" alt="Image alt">
+                <img id="imagePreview" style="width: 350px; height: auto" th:src="@{'data:image/jpeg;charset=utf-8;base64,' + *{base64content}}" alt="Image alt">
               </div>
               <input class="form-control" id="imageInput" th:field="*{imageInput}" accept="image/*" type="file">
             </div>

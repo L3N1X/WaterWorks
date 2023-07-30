@@ -8,10 +8,13 @@ import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
 import hr.algebra.waterworks.shared.dtos.LoginDto;
+import hr.algebra.waterworks.shared.requests.CreateCategoryRequest;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
+import hr.algebra.waterworks.shared.requests.EditItemRequest;
 import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,7 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert itemJdbcInsert;
     private SimpleJdbcInsert loginJdbcInsert;
+    private SimpleJdbcInsert categoryJdbcInsert;
 
     @Autowired
     public WaterWorksServiceJdbc(JdbcTemplate jdbcTemplate, ImageConfig imageConfig) {
@@ -47,12 +51,21 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
         this.loginJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("USER_ACCOUNT_LOGIN")
                 .usingGeneratedKeyColumns("ID");
+        this.categoryJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("CATEGORY")
+                .usingGeneratedKeyColumns("ID");
     }
 
     @Override
-    public List<ItemDto> getAllItems(ItemFilterRequest request) {
+    public List<ItemDto> getAllItems(ItemFilterRequest request, Optional<Boolean> active) {
 
         String query = SELECT_ALL_ITEMS_QUERY;
+        if(active.isPresent()){
+            if(active.get() == true)
+                query += " AND ACTIVE = true";
+            else
+                query += " AND ACTIVE = false";
+        }
         if(request != null){
             if(Optional.ofNullable(request.getName()).isPresent() && !request.getName().isBlank()){
                 query += " AND NAME = '" + request.getName() + "'";
@@ -130,6 +143,39 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
         return dto.orElse(null);
     }
 
+    private final String UPDATE_ITEM_QUERY_NEW_IMAGE = "UPDATE ITEM SET NAME = ?, DESCRIPTION = ?, PRICE = ?, IMAGE_NAME = ?, AMOUNT = ?, CATEGORY_ID = ? WHERE ID = ?";
+    private final String UPDATE_ITEM_QUERY_OLD_IMAGE = "UPDATE ITEM SET NAME = ?, DESCRIPTION = ?, PRICE = ?, AMOUNT = ?, CATEGORY_ID = ? WHERE ID = ?";
+
+    @Override
+    public void editItem(EditItemRequest request) throws IOException {
+
+        if (!request.getImageInput().isEmpty()) {
+            String base64image = null;
+            base64image = Base64.getEncoder().encodeToString(request.getImageInput().getBytes());
+            jdbcTemplate.update(UPDATE_ITEM_QUERY_NEW_IMAGE, request.getName(),
+                    request.getDescription(),
+                    request.getPrice(),
+                    base64image,
+                    request.getAmount(),
+                    request.getSelectedCategoryId(),
+                    request.getId());
+        } else {
+            jdbcTemplate.update(UPDATE_ITEM_QUERY_OLD_IMAGE, request.getName(),
+                    request.getDescription(),
+                    request.getPrice(),
+                    request.getAmount(),
+                    request.getSelectedCategoryId(),
+                    request.getId());
+        }
+    }
+
+
+    private final String TOGGLE_ACTIVE_QUERY = "UPDATE ITEM SET ACTIVE = ? WHERE ID = ?";
+    @Override
+    public void toggleActiveItem(int id, boolean active) {
+        jdbcTemplate.update(TOGGLE_ACTIVE_QUERY, active, id);
+    }
+
     private int insertItem(CreateItemRequest request) throws IOException {
         String base64image = null;
         if(!request.getImageInput().isEmpty()) {
@@ -149,6 +195,13 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     public List<CategoryDto> getAllCategories() {
         List<Category> categories = jdbcTemplate.query(SELECT_ALL_CATEGORIES, this::mapRowToCategory);
         return categoriesToDtos(categories);
+    }
+
+    @Override
+    public void createCategory(CreateCategoryRequest request) {
+        Map<String, Object> categoryDetails = new HashMap<>();
+        categoryDetails.put("NAME", request.getName());
+        categoryJdbcInsert.execute(categoryDetails);
     }
 
     @Override
