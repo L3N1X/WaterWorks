@@ -15,9 +15,7 @@ public class Receipt {
     private int id;
     private String receiptNumber;
     private int userId;
-    private User user;
     private String userFullName;
-    private List<Item> purchasedItems;
     private BigDecimal paidPrice;
     private PurchaseType purchaseType;
 }

@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"
-      layout:decorate="layouts/defaultLayout"
-      xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
   <div class="container d-flex justify-content-center align-items-center" style="width: 100vw; height: 75vh">
     <div class="card mb-3 p-3" style="width:750px">
       <div class="card-body">
-        <h4 class="card-title text-center mb-5 text-warning"><i class="fa-solid fa-cart-shopping" title="cart"></i>&nbsp;&nbsp;Moja košarica</h4>
+        <h4 class="card-title text-center mb-5 text-warning"><i class="fa-solid fa-cart-shopping" title="cart"></i>&nbsp;&nbsp;Naplata</h4>
         <div class="mb-1">
           <table class="table" th:if="${cart.getItems().size() != 0}">
             <thead>
@@ -17,7 +13,6 @@
               <th scope="col">Proizvod</th>
               <th scope="col">Količina</th>
               <th scope="col">Cijena</th>
-              <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -25,10 +20,6 @@
               <td th:text="${entry.getKey().name()}"></td>
               <td th:text="${entry.getValue()}"></td>
               <td th:text="${entry.getKey().price() + '€'}"></td>
-              <td>
-                <a th:if="${entry.getKey().amount() > entry.getValue()}" th:href="@{/cart/addMore/__${entry.getKey().id()}__}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus"></i></a>
-                <a th:href="@{/cart/remove/__${entry.getKey().id()}__}" class="btn btn-outline-secondary"><i class="fa-solid fa-minus"></i></a>
-              </td>
             </tr>
             </tbody>
             <tfoot>
@@ -42,11 +33,9 @@
           <h6 class="text-center" th:if="${cart.getItems().size() == 0}">Nemate proivoda u košarici</h6>
         </div>
       </div>
-      <div sec:authorize="isAnonymous()" class="w-100">
-        <span class="text-center w-100">Kako bi izvršili kupnju, morate se prijaviti <a href="/login">ovdje</a></span>
-      </div>
-      <div class="d-flex justify-content-end align-items-center mb-4 gap-4" th:if="${cart.getItems().size() != 0}" sec:authorize="isAuthenticated()">
-        <a href="/checkout" class="btn btn-primary">Idi na kupnju</a>
+      <div class="d-flex justify-content-end align-items-center mb-4 gap-4" th:if="${cart.getItems().size() != 0}">
+        <a href="#" class="btn btn-primary">Plati pouzećem <i class="fa-solid fa-money-bill"></i></a>
+        <a href="#" class="btn btn-outline-primary">Plati s Pay-Pal <i class="fa-brands fa-paypal"></i></a>
       </div>
       <div class="d-flex justify-content-center align-items-center mt-3 mb-4" th:if="${cart.getItems().size() == 0}">
         <a href="/" class="btn btn-outline-secondary">Povratak na kupnju</a>

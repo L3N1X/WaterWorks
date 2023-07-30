@@ -33,6 +33,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/manage/**").hasAuthority("ADMIN")
+                        .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers("/checkout/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
