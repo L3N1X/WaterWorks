@@ -1,6 +1,7 @@
 package hr.algebra.waterworks.controllers.view;
 
 import hr.algebra.waterworks.publishers.LoginEventPublisher;
+import hr.algebra.waterworks.services.interfaces.PurchaseService;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
@@ -25,6 +26,7 @@ public class ManageController {
 
     private LoginEventPublisher loginEventPublisher;
     private WaterWorksService waterWorksService;
+    private PurchaseService purchaseService;
 
     @GetMapping("create")
     private String getCreateItemPage(Model model) {
@@ -118,5 +120,11 @@ public class ManageController {
     public String createNewCategory(Model model, @ModelAttribute("createCategoryRequest") CreateCategoryRequest createCategoryRequest) {
         waterWorksService.createCategory(createCategoryRequest);
         return "redirect:/manage/categories";
+    }
+
+    @GetMapping("receipts")
+    public String getReceiptsPage(Model model){
+        model.addAttribute("receipts", purchaseService.getAllReceipts());
+        return "manage-receipts";
     }
 }

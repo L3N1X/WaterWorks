@@ -34,8 +34,8 @@
         </div>
       </div>
       <div class="d-flex justify-content-end align-items-center mb-4 gap-4" th:if="${cart.getItems().size() != 0}">
-        <a href="#" class="btn btn-primary">Plati pouzećem <i class="fa-solid fa-money-bill"></i></a>
-        <a href="#" class="btn btn-outline-primary">Plati s Pay-Pal <i class="fa-brands fa-paypal"></i></a>
+        <a href="/purchase/cash" class="btn btn-primary">Plati pouzećem <i class="fa-solid fa-money-bill"></i></a>
+        <a href="/purchase/paypal" class="btn btn-outline-primary">Plati s Pay-Pal <i class="fa-brands fa-paypal"></i></a>
       </div>
       <div class="d-flex justify-content-center align-items-center mt-3 mb-4" th:if="${cart.getItems().size() == 0}">
         <a href="/" class="btn btn-outline-secondary">Povratak na kupnju</a>

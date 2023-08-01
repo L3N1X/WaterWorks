@@ -4,10 +4,12 @@ import hr.algebra.waterworks.config.ImageConfig;
 import hr.algebra.waterworks.dao.entities.Category;
 import hr.algebra.waterworks.dao.entities.Item;
 import hr.algebra.waterworks.dao.entities.Login;
+import hr.algebra.waterworks.dao.entities.User;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
 import hr.algebra.waterworks.shared.dtos.LoginDto;
+import hr.algebra.waterworks.shared.dtos.UserDto;
 import hr.algebra.waterworks.shared.requests.CreateCategoryRequest;
 import hr.algebra.waterworks.shared.requests.CreateItemRequest;
 import hr.algebra.waterworks.shared.requests.EditItemRequest;
@@ -224,5 +226,19 @@ public class WaterWorksServiceJdbc implements WaterWorksService {
     @Override
     public List<LoginDto> getAllLogins() {
         return jdbcTemplate.query(SELECT_ALL_LOGINS, this::mapRowToLogin);
+    }
+
+    private final String GET_USER_BY_USERNAME_QUERY = "SELECT * FROM users WHERE username = ";
+
+    @Override
+    public UserDto getUser(String username) {
+        Optional<UserDto> user = jdbcTemplate.query(GET_USER_BY_USERNAME_QUERY + "'" + username + "'", this::mapRowToUser).stream().findFirst();
+        return user.orElse(null);
+    }
+    private UserDto mapRowToUser(ResultSet rs, int rowNum) throws SQLException{
+        return new UserDto(rs.getString("FIRST_NAME"),
+                rs.getString("LAST_NAME"),
+                rs.getString("username"),
+                null);
     }
 }

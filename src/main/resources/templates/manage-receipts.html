@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Broj računa</th>
+        <th scope="col">Kupac</th>
+        <th scope="col">Korisničko ime</th>
+        <th scope="col">Datum i vrijeme</th>
+        <th scope="col">Ukupni iznos</th>
+        <th scope="col">Stavke</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="receipt: ${receipts}">
+        <th scope="row" th:text="${receipt.getReceiptNumber()}"></th>
+        <td th:text="${receipt.getUserFullName()}"></td>
+        <td th:text="${receipt.getUsername()}"></td>
+        <td th:text="${receipt.getLocalDateTime()}"></td>
+        <td th:text="${receipt.getTotalPrice() + '€'}"></td>
+        <td>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Artikal</th>
+                <th scope="col">Cijena</th>
+                <th scope="col">Količina</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="purchaseRecord : ${receipt.getPurchaseRecords()}">
+                <td th:text="${purchaseRecord.itemName()}"></td>
+                <td th:text="${purchaseRecord.price()}"></td>
+                <td th:text="${purchaseRecord.amount()}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

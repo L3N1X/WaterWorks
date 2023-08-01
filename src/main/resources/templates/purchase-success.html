@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+  <div class="container d-flex justify-content-center align-items-center" style="width: 100vw; height: 75vh">
+    <div class="alert alert-success" role="alert">
+      Transakcija je uspješno provedena. Broj računa: <span th:text="${receiptNumber}"></span>. Pogledajte svoje kupnje <a href="/purchase/receipts">ovdje</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

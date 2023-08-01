@@ -20,6 +20,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#" style="color: white">O nama</a>
                     </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" href="/purchase/receipts" style="color: white">Moje kupnjue</a>
+                    </li>
                     <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" href="/manage/items" style="color: white">Upravljanje inventarom</a>
                     </li>
