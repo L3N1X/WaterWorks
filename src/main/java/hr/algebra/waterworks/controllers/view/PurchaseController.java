@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @AllArgsConstructor
@@ -67,18 +66,19 @@ public class PurchaseController {
             if(user != null){
                 try {
                     Cart cart = (Cart)session.getAttribute("cart");
-                    Payment payment = paypalService.createPayment(cart.getTotalPrice(), "EUR", "paypal", "sale", "Kupnja proizvoda u WaterWorks web", "http://localhost:6969", "http://localhost:6969/purchase/success");
+                    Payment payment = paypalService.createPayment(
+                            cart.getTotalPrice(),
+                            "EUR",
+                            "paypal",
+                            "sale",
+                            "Kupnja proizvoda u WaterWorks web",
+                            "http://localhost:6969",
+                            "http://localhost:6969/purchase/paypal-success-redirect");
                     for(Links link:payment.getLinks()) {
                         if(link.getRel().equals("approval_url")) {
                             return "redirect:"+link.getHref();
                         }
                     }
-                    String receiptNumber = purchaseService.initPurchaseFromCart(
-                            (Cart)session.getAttribute("cart"),
-                            PurchaseType.PAYPAL, user);
-                    model.addAttribute("receiptNumber", receiptNumber);
-                    session.setAttribute("cart", new Cart());
-                    return "purchase-success";
                 } catch (PayPalRESTException ex) {
                     ex.printStackTrace();
                 }
@@ -99,14 +99,32 @@ public class PurchaseController {
                 username = principal.toString();
             }
             model.addAttribute("receipts", purchaseService.getReceipts(username));
-            return "manage-receipts";
+            return "manage-receipts-user";
         }
         return "redirect:/";
     }
 
-    @GetMapping("paypal-")
-    public String getPaypalSuccessPage(Model model, @RequestParam("receiptnumner") String receiptNumber){
-        model.addAttribute("receiptNumber", receiptNumber);
-        return "purchase-success";
+    @GetMapping("paypal-success-redirect")
+    public String getPayPalSuccessRedirect(Model model, HttpSession session){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = "";
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails)principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+            UserDto user = waterWorksService.getUser(username);
+            if (user != null) {
+                String receiptNumber = purchaseService.initPurchaseFromCart(
+                        (Cart)session.getAttribute("cart"),
+                        PurchaseType.PAYPAL, user);
+                model.addAttribute("receiptNumber", receiptNumber);
+                session.setAttribute("cart", new Cart());
+                return "purchase-success";
+            }
+        }
+        return "redirect:/";
     }
 }
