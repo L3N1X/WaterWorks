@@ -6,6 +6,7 @@ import hr.algebra.waterworks.shared.dtos.ItemDto;
 import hr.algebra.waterworks.shared.dtos.PurchaseRecordDto;
 import hr.algebra.waterworks.shared.dtos.ReceiptDto;
 import hr.algebra.waterworks.shared.dtos.UserDto;
+import hr.algebra.waterworks.shared.requests.ReceiptFilterRequest;
 import hr.algebra.waterworks.shared.sessionmodels.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -84,10 +85,24 @@ public class PurchaseServiceJdbc implements PurchaseService {
                 (rs.getTimestamp("LOCAL_DATETIME")).toLocalDateTime());
     }
 
-    private final String SELECT_RECEIPTS_QUERY = "SELECT * FROM RECEIPT";
+    private final String SELECT_RECEIPTS_QUERY = "SELECT * FROM RECEIPT WHERE 1=1";
     @Override
     public List<ReceiptDto> getAllReceipts() {
         List<ReceiptDto> receipts = jdbcTemplate.query(SELECT_RECEIPTS_QUERY, this::mapRowToReceipt);
+        for (ReceiptDto receipt : receipts) {
+            receipt.setPurchaseRecords(getPurchaseRecords(receipt.getId()));
+        }
+        return receipts;
+    }
+
+    @Override
+    public List<ReceiptDto> getAllReceiptsFiltered(ReceiptFilterRequest filterRequest) {
+        String query = SELECT_RECEIPTS_QUERY;
+        if(filterRequest.getDateFrom() != null)
+            query += " AND LOCAL_DATETIME >= '" + filterRequest.getDateFrom().atStartOfDay() + "'";
+        if(filterRequest.getDateTo() != null)
+            query += " AND LOCAL_DATETIME <= '" + filterRequest.getDateTo().atStartOfDay() + "'";
+        List<ReceiptDto> receipts = jdbcTemplate.query(query, this::mapRowToReceipt);
         for (ReceiptDto receipt : receipts) {
             receipt.setPurchaseRecords(getPurchaseRecords(receipt.getId()));
         }

@@ -3,22 +3,22 @@
 <body>
 <div layout:fragment="content">
   <div class="p-4">
-    <div class="row">
-      <form action="/manage/receipts" method="post">
-        <div class="col-12 col-md-10">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1">od</span>
-            <input type="text" class="form-control" name="item.priceFrom" th:field="*{priceFrom}" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
-            <span class="input-group-text">do</span>
-            <input type="text" class="form-control" th:field="*{priceTo}" placeholder="..." aria-label="Cijena do">
-            <span class="input-group-text">€</span>
+    <form action="/manage/receipts" th:objcet="${receiptsFilter}" method="post">
+      <div class="row">
+          <div class="col-12 col-md-8">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">od</span>
+              <input type="date" class="form-control" name="item.priceFrom" th:field="*{receiptsFilter.dateFrom}" placeholder="..." aria-label="Cijena od" aria-describedby="basic-addon1">
+              <span class="input-group-text">do</span>
+              <input type="date" class="form-control" th:field="*{receiptsFilter.dateTo}" placeholder="..." aria-label="Cijena do">
+              <span class="input-group-text">datum</span>
+            </div>
           </div>
-        </div>
-        <div class="col-12 col-md-2">
-          <input type="submit" value="Filtriraj" class="btn btn-secondary">
-        </div>
-      </form>
-    </div>
+          <div class="col-12 col-md-4">
+            <input type="submit" value="Filtriraj" class="btn btn-secondary">
+          </div>
+      </div>
+    </form>
     <table class="table">
       <thead>
       <tr>

@@ -34,6 +34,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/manage/**").hasAuthority("ADMIN")
                         .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/checkout/**").authenticated()
                         .anyRequest().authenticated()
                 )

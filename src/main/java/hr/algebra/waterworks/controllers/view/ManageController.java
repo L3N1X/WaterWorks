@@ -5,16 +5,17 @@ import hr.algebra.waterworks.services.interfaces.PurchaseService;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.CategoryDto;
 import hr.algebra.waterworks.shared.dtos.ItemDto;
-import hr.algebra.waterworks.shared.requests.CreateCategoryRequest;
-import hr.algebra.waterworks.shared.requests.CreateItemRequest;
-import hr.algebra.waterworks.shared.requests.EditItemRequest;
-import hr.algebra.waterworks.shared.requests.ItemFilterRequest;
+import hr.algebra.waterworks.shared.dtos.ReceiptDto;
+import hr.algebra.waterworks.shared.requests.*;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.IncorrectUpdateSemanticsDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -125,6 +126,13 @@ public class ManageController {
     @GetMapping("receipts")
     public String getReceiptsPage(Model model){
         model.addAttribute("receipts", purchaseService.getAllReceipts());
+        model.addAttribute("receiptsFilter", new ReceiptFilterRequest());
+        return "manage-receipts";
+    }
+
+    @PostMapping("receipts")
+    public String getFilteredReceiptsPage(Model model, @ModelAttribute("receiptsFilter") ReceiptFilterRequest receiptFilterRequest) {
+        model.addAttribute("receipts", purchaseService.getAllReceiptsFiltered(receiptFilterRequest));
         return "manage-receipts";
     }
 }
