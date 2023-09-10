@@ -8,6 +8,7 @@ import hr.algebra.waterworks.services.implementations.PaypalService;
 import hr.algebra.waterworks.services.interfaces.PurchaseService;
 import hr.algebra.waterworks.services.interfaces.WaterWorksService;
 import hr.algebra.waterworks.shared.dtos.UserDto;
+import hr.algebra.waterworks.shared.requests.ReceiptFilterRequest;
 import hr.algebra.waterworks.shared.sessionmodels.Cart;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -99,6 +102,27 @@ public class PurchaseController {
                 username = principal.toString();
             }
             model.addAttribute("receipts", purchaseService.getReceipts(username));
+            model.addAttribute("receiptsFilter", new ReceiptFilterRequest());
+            return "manage-receipts-user";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("receipts")
+    public String getMyReceiptsPage(Model model, @ModelAttribute("receiptsFilter") ReceiptFilterRequest receiptFilterRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = "";
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails)principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+            final String finalUsername = username;
+            model.addAttribute("receipts", purchaseService.getAllReceiptsFiltered(receiptFilterRequest)
+                    .stream()
+                    .filter(r -> r.getUsername().equals(finalUsername)));
             return "manage-receipts-user";
         }
         return "redirect:/";

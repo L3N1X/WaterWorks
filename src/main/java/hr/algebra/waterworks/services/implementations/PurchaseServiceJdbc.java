@@ -46,7 +46,7 @@ public class PurchaseServiceJdbc implements PurchaseService {
         receiptDetails.put("TOTAL_PRICE", cart.getTotalPrice());
         receiptDetails.put("PURCHASE_TYPE", purchaseType.getIntValue());
         receiptDetails.put("LOCAL_DATETIME", LocalDateTime.now());
-        int receiptId = receiptJdbcInsert.execute(receiptDetails);
+        int receiptId = (receiptJdbcInsert.executeAndReturnKey(receiptDetails)).intValue();
         for (ItemDto item : cart.getItems().keySet()) {
 
             Integer value = cart.getItems().get(item);
